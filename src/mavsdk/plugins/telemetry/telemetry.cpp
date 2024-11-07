@@ -781,6 +781,11 @@ std::pair<Telemetry::Result, Telemetry::GpsGlobalOrigin> Telemetry::get_gps_glob
     return _impl->get_gps_global_origin();
 }
 
+Telemetry::Result Telemetry::set_gps_global_origin(const Telemetry::GpsGlobalOrigin& gps_origin)
+{
+    return _impl->set_gps_global_origin(gps_origin);
+}
+
 bool operator==(const Telemetry::Position& lhs, const Telemetry::Position& rhs)
 {
     return ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) ||

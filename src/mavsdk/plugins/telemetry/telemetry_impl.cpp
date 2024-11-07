@@ -2516,4 +2516,35 @@ std::pair<Telemetry::Result, Telemetry::GpsGlobalOrigin> TelemetryImpl::get_gps_
     return fut.get();
 }
 
+Telemetry::Result TelemetryImpl::set_gps_global_origin(const Telemetry::GpsGlobalOrigin& gps_origin)
+{
+    if (!_system_impl->is_connected()) {
+        return Telemetry::Result::NoSystem;
+    }
+
+    const uint64_t autopilot_time_usec =
+            std::chrono::duration_cast<std::chrono::microseconds>(
+                _system_impl->get_autopilot_time().now().time_since_epoch())
+                .count();
+
+    return _system_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_set_gps_global_origin_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            _system_impl->get_system_id(),
+            gps_origin.latitude_deg * 1e7,
+            gps_origin.longitude_deg * 1e7,
+            gps_origin.altitude_m * 1e3f,
+            autopilot_time_usec
+            ); // FIXME: reset_counter not set
+        return message;
+    }) ?
+    Telemetry::Result::Success :
+    Telemetry::Result::ConnectionError;   
+}
+
+
 } // namespace mavsdk
