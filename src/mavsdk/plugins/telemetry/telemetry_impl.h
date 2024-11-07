@@ -80,6 +80,7 @@ public:
 
     void get_gps_global_origin_async(const Telemetry::GetGpsGlobalOriginCallback callback);
     std::pair<Telemetry::Result, Telemetry::GpsGlobalOrigin> get_gps_global_origin();
+    Telemetry::Result set_gps_global_origin(const Telemetry::GpsGlobalOrigin& gps_origin);
 
     Telemetry::PositionVelocityNed position_velocity_ned() const;
     Telemetry::Position position() const;

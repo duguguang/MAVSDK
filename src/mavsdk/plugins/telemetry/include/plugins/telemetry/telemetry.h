@@ -2369,6 +2369,13 @@ public:
     std::pair<Result, Telemetry::GpsGlobalOrigin> get_gps_global_origin() const;
 
     /**
+     * @brief Set the GPS location of where the estimator has been initialized.
+     *
+     * This function is blocking.
+     */
+    Result set_gps_global_origin(const Telemetry::GpsGlobalOrigin& gps_origin);
+
+    /**
      * @brief Copy constructor.
      */
     Telemetry(const Telemetry& other);
